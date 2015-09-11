@@ -1,0 +1,514 @@
+Create table commands :
+COMPANY
+
+CREATE TABLE Company
+(comid int NOT NULL,
+ name varchar(50) UNIQUE,
+ country varchar(50),
+ PRIMARY KEY(comid)
+);
+
+MODELS
+CREATE TABLE Models
+(modid int NOT NULL,
+ model varchar(20) NOT NULL,
+ PRIMARY KEY(modid),
+ comid int ,
+ CONSTRAINT FK1 FOREIGN KEY (comid) REFERENCES Company(comid)
+);
+
+VEHICLE
+CREATE TABLE Vehicle
+(vehid int NOT NULL,
+ license varchar(20) NOT NULL UNIQUE,
+ PRIMARY KEY(vehid),
+ modid int ,
+ Year date,
+ colorid int,
+ fuelid int,
+ cc varchar(8),
+ km int,
+ price int ,
+
+ CONSTRAINT Chk_year   CHECK(Year>'1-1-2010'),
+ CONSTRAINT Chk_cubicc CHECK(cc='1600cc' OR cc='1800cc' OR cc='2000cc' OR cc='2400cc'),
+ CONSTRAINT Chk_Price  Check(Price>5000 AND Price<25000),
+ CONSTRAINT FK2 FOREIGN KEY (modid) REFERENCES Models(modid),
+ CONSTRAINT FK3 FOREIGN KEY (colorid) REFERENCES Colors(colorid),
+ CONSTRAINT FK4 FOREIGN KEY (fuelid) REFERENCES Fuels(fuelid)
+ ON DELETE CASCADE
+);
+
+
+
+
+COLORS
+CREATE TABLE Colors(
+	colorid int,
+	PRIMARY KEY(colorid),
+	Color varchar(20)NOT NULL UNIQUE,
+	CONSTRAINT check_color CHECK(Color='Μπλέ' OR Color='Κόκκινο' OR Color='Πράσινο'OR Color='Κίτρινο'OR Color='Μαύρο'OR Color='Άσπρο'OR Color='Ασημί'),
+);
+
+
+FUELS
+CREATE TABLE Fuels(
+	fuelid int,
+	PRIMARY KEY(fuelid),
+	fuel varchar(20)NOT NULL UNIQUE,
+	CONSTRAINT check_fuel CHECK(fuel='Πετρέλαιο' OR fuel='Βενζίνη'OR fuel='Φυσικό Αέριο'OR fuel='Ηλεκτροκίνητο')
+);
+
+EXTRAS
+CREATE TABLE Extras(
+	extraid int,
+	PRIMARY KEY(extraid),
+	descr varchar(50)
+);
+
+VEHEXTRAS
+CREATE TABLE veh_extras(
+	vehid int,
+	Extraid int,
+	CONSTRAINT FK5 FOREIGN KEY(vehid)REFERENCES Vehicle(vehid),
+	CONSTRAINT FK6 FOREIGN KEY(extraid)REFERENCES Extras(extraid),
+	CONSTRAINT PK1 PRIMARY KEY(vehid,extraid)
+
+);
+
+INSERTS
+COMPANIES
+
+INSERT INTO Company (comid, name,country)
+	VALUES('1','BMW','Germany');
+
+INSERT INTO Company (comid, name,country)
+	VALUES('2','Mercedes','Germany');
+
+INSERT INTO Company (comid, name,country)
+	VALUES('3','Opel','GERMANY');
+
+INSERT INTO Company (comid, name,country)
+	VALUES('4','Fiat','Italy');
+
+INSERT INTO Company (comid, name,country)
+	VALUES('5','Nissan','Japan');
+INSERT INTO Company (comid, name,country)
+	VALUES('6','Ford','USA');
+INSERT INTO Company (comid, name,country)
+	VALUES('7','Honda', 'Japan');
+
+
+
+MODELS
+
+
+
+INSERT INTO Models (modid, model,comid)
+	VALUES('1','Gtr','5');
+INSERT INTO Models (modid, model,comid)
+	VALUES('2','Silvia','5');
+INSERT INTO Models (modid, model,comid)
+	VALUES('3','M3','1');
+INSERT INTO Models (modid, model,comid)
+	VALUES('4','Z4','1');
+INSERT INTO Models (modid, model,comid)
+	VALUES('5','Corsa','3');
+INSERT INTO Models (modid, model,comid)
+	VALUES('6','Punto','4');
+INSERT INTO Models (modid, model,comid)
+	VALUES('7','Vectra','3');
+INSERT INTO Models (modid, model,comid)
+	VALUES('8','Bravo','4');
+INSERT INTO Models (modid, model,comid)
+	VALUES('9','Slk','2');
+INSERT INTO Models (modid, model,comid)
+	VALUES('10','Amg','2');
+INSERT INTO Models (modid, model,comid)
+	VALUES('11','Civic','7');
+INSERT INTO Models (modid, model,comid)
+	VALUES('1','Gtr','5');
+INSERT INTO Models (modid, model,comid)
+	VALUES('2','Silvia','5');
+INSERT INTO Models (modid, model,comid)
+	VALUES('3','M3','1');
+INSERT INTO Models (modid, model,comid)
+	VALUES('4','Z4','1');
+INSERT INTO Models (modid, model,comid)
+	VALUES('5','Corsa','3');
+INSERT INTO Models (modid, model,comid)
+	VALUES('6','Punto','4');
+INSERT INTO Models (modid, model,comid)
+	VALUES('7','Vectra','3');
+INSERT INTO Models (modid, model,comid)
+	VALUES('8','Bravo','4');
+INSERT INTO Models (modid, model,comid)
+	VALUES('9','Slk','2');
+INSERT INTO Models (modid, model,comid)
+	VALUES('10','Amg','2');
+INSERT INTO Models (modid, model,comid)
+	VALUES('11','Civic','7');
+INSERT INTO Models (modid, model,comid)
+	VALUES('12','Slr','2');
+
+
+COLORS
+
+
+INSERT INTO Colors (colorid,color)
+	VALUES('2','Κόκκινο');
+INSERT INTO Colors (colorid,color)
+	VALUES('3','Κίτρινο');
+INSERT INTO Colors (colorid,color)
+	VALUES('4','Πράσινο');
+INSERT INTO Colors (colorid,color)
+	VALUES('5','Μαύρο');
+INSERT INTO Colors (colorid,color)
+	VALUES('6','Άσπρο');
+INSERT INTO Colors (colorid,color)
+	VALUES('7','Ασημί');
+
+
+FUELS
+INSERT Fuels(fuelid,fuel)
+	VALUES('1','Πετρέλαιο');
+INSERT Fuels(fuelid,fuel)
+	VALUES('2','Βενζίνη');
+INSERT Fuels(fuelid,fuel)
+	VALUES('3','Φυσικό αέριο');
+INSERT Fuels(fuelid,fuel)
+	VALUES('4','Ηλεκτροκίνητο');
+
+VEHICLES
+
+INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('1','Ν01-2412','3','3-3-2011','5','2','2400cc','33000','20000')
+
+INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('2','ΗΑΒ-5671','3','5-28-2013','7','1','1600cc','88560','23000')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('3','ΥΚΟ-9412','5','5-30-2011','2','3','2000cc','97892','15312')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('4','ΙΟΥ-5654','2','1-11-2013','6','2','2400cc','67231','13450')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('5','ΡΟΟ-2123','2','5-6-2010','7','1','1800cc','56785','18900')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('6','ΝΟΤ-5421','6','2-2-2014','2','1','1800cc','75665','11200')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('11','ΑΣΤ-1231','1','3-3-2011','2','4','2000cc','145600','5879')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('7','ΗΙΟ-2121','1','7-7-2014','2','3','1600cc','110300','6500')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('8','ΚΟΠ-4321','4','2-1-2015','3','2','1600cc','100860','7999')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('9','ΥΙΟ-4325','4','6-9-2014','5','2','2000cc','68077','16000')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('10','ΚΙΛ-7834','6','8-30-2015','6','1','2000cc','36006','24200')
+
+ 
+
+
+
+
+INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('12','ΗΑΒ-2231','12','7-13-2014','5','2','1600cc','78665','20430')
+
+INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('13','ΗΑΖ-2312','11','7-26-2013','7','1','1600cc','86644','22300')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('14','ΥΗΥ-9856','12','3-29-2011','4','3','1800cc','75685','16712')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('15','ΥΙΖ-6564','5','9-6-2013','6','2','2400cc','12564','13850')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('16','ΡΟΟ-2731','7','11-30-2010','7','1','1800cc','95433','15400')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('17','ΤΑΡ-8631','6','11-25-2014','2','1','1800cc','123486','13800')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('18','ΠΑΚ-4512','2','12-12-2011','2','4','1600cc','47846','5869')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('19','ΠΑΣ-1768','3','1-13-2014','5','3','1600cc','45665','8900')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('20','ΜΟΙ-6523','8','7-1-2015','3','2','1800cc','76546','7956')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('21','ΥΙΟ-6503','7','6-11-2014','5','2','2000cc','89654','15670')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('22','ΚΙΑ-4837','9','1-30-2015','6','1','2400cc','86546','24400')
+	INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('23','Ν0Μ-2492','9','4-4-2011','5','2','1600cc','65784','20430')
+
+INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('24','ΗΑΒ-5779','6','7-28-2013','7','1','1600cc','65535','23650')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('25','ΥΚΙ-9444','1','5-14-2011','6','3','1600cc','15464','17642')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('26','ΙΟΝ-5454','10','1-17-2013','6','2','1600cc','78465','16860')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('27','ΒΟΟ-8123','4','5-18-2010','7','1','1800cc','12456','18900')
+
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('28','ΝΟΛ-7621','3','2-20-2014','2','1','1800cc','63645','15230')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('29','ΑΣΚ-1985','6','3-28-2011','2','4','2000cc','18790','15779')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('30','ΗΙΟ-2561','5','8-9-2014','3','3','1600cc','18970','6574')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('31','ΠΟΚ-4643','5','12-10-2015','3','2','1600cc','180860','7769')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('32','ΤΡΑ-4535','11','6-23-2014','5','2','2000cc','69077','16800')
+
+ INSERT INTO Vehicle(vehid,license,modid,Year,colorid,fuelid,cc,km,price)
+	VALUES  ('33','ΚΙΜ-7194','1','5-22-2015','6','1','2000cc','34006','24750')
+
+
+EXTRAS
+ 
+INSERT INTO Extras (extraid, descr)
+	VALUES(1,'Ηλεκτρικά Παράθυρα');
+INSERT INTO Extras (extraid, descr)
+	VALUES(2,'Ζάντες αλουμινιίου');
+INSERT INTO Extras (extraid, descr)
+	VALUES(3,'ABS');
+INSERT INTO Extras (extraid, descr)
+	VALUES(4,'CD-Player');
+INSERT INTO Extras (extraid, descr)
+	VALUES(5,'air-condition');
+
+
+VEH_EXTRAS
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(1,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(1,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(1,3);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(1,4);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(2,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(3,1);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(3,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(4,1);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(4,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(4,3);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(5,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(5,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(6,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(6,1);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(7,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(8,3);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(8,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(9,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(9,3);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(9,4);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(10,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(10,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(11,3);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(11,4);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(12,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(12,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(13,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(13,3);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(14,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(14,3);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(15,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(15,4);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(16,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(16,3);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(17,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(18,1);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(19,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(19,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(19,3);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(20,1);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(20,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(21,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(21,3);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(22,4);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(23,3);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(24,3);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(24,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(25,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(25,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(26,1);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(26,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(26,4);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(26,3);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(27,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(28,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(29,4);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(29,3);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(30,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(30,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(31,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(32,2);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(32,3);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(31,4);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(33,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(33,1);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(33,2);
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(33,3);
+
+
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(1,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(3,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(4,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(5,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(6,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(7,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(8,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(9,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(12,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(13,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(14,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(15,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(16,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(18,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(17,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(20,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(29,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(28,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(27,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(26,5);
+INSERT INTO veh_extras (vehid, extraid)
+	VALUES(25,5);
