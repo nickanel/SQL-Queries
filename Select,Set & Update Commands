@@ -1,0 +1,73 @@
+SELECT * FROM Company
+
+2. Βρείτε τα μοντέλα για τα οποία υπάρχουν οχήματα χρώματος "Ασημί".
+
+SELECT distinct model FROM Vehicle,Models
+WHERE(Vehicle.colorid='7' AND Models.modid=Vehicle.modid);
+ 
+
+ 3. Εμφανίστε ένα κατάλογο με όλα τα διαθέσιμα οχήματα. Στον κατάλογο θα πρέπει να εμφανίζονται για κάθε όχημα: ο κατασκευαστής, το μοντέλο του, ο αριθμός αδείας και το έτος κατασκευής. Ο κατάλογος θα πρέπει να είναι ταξινομημένος σε αύξουσα διάταξη με βάση το όνομα του κατασκευαστή και το μοντέλο. 
+SELECT name,model,license,Year FROM Company ,Models,Vehicle
+	WHERE(Vehicle.modid=Models.modid AND Models.comid=Company.comid)
+	ORDER BY name,model;
+ 
+
+
+
+4. Εμφανίστε ένα κατάλογο με τα χρώματα και τον αριθμό των διαθέσιμων αυτοκινήτων για κάθε χρώμα. 
+SELECT  Color, COUNT(distinct vehid)  FROM Colors, Vehicle
+	WHERE(Colors.colorid=Vehicle.colorid)
+	GROUP BY Color
+		
+ 
+
+5. Εμφανίστε ένα κατάλογο με τα διαθέσιμα μοντέλα και τον αριθμό των οχημάτων για κάθε μοντέλο. Ο κατάλογος θα πρέπει να περιλαμβάνει μόνο τα μοντέλα για τα οποία υπάρχουν τουλάχιστον τρία οχήματα. 
+SELECT  model, COUNT( Vehicle.modid)  FROM Models, Vehicle
+	WHERE(Models.modid=Vehicle.modid)	
+	GROUP BY Model
+	HAVING COUNT( Vehicle.modid)>2 
+	
+6. Εμφανίστε ένα κατάλογο με τον κωδικό του οχήματος, το μοντέλο, τα χιλιόμετρα, τα κυβικά εκατοστά, το καύσιμο που καταναλώνει, το έτος κατασκευής και την τιμή, για όλα τα οχήματα που κοστίζουν από 5000 μέχρι και 15000 ευρώ, ταξινομημένο με βάση την τιμή του οχήματος σε φθίνουσα διάταξη. 
+SELECT Vehicle.modid,model,km,cc,fuel,year,price FROM Vehicle,Models,Fuels
+		WHERE(Models.modid=Vehicle.modid AND Vehicle.price>5000 AND Vehicle.price<15000 AND Vehicle.fuelid=Fuels.Fuelid)
+		ORDER BY Vehicle.price DESC
+
+7. Βρείτε την συνολική αξία των οχημάτων ενός συγκεκριμένου κατασκευαστή (π.χ. Honda).
+SELECT sum(price) FROM Vehicle,Models,Company
+	where(Vehicle.modid=Models.modid AND Models.comid = Company.comid AND Company.name='Mercedes')
+ 
+ 8. Βρείτε πόσα οχήματα διαθέτουν air condition.
+SELECT COUNT(Vehicle.vehid) FROM Vehicle,veh_extras
+	WHERE(Vehicle.vehid=veh_extras.vehid AND veh_extras.extraid=5)
+
+9. Εμφανίστε ένα κατάλογο με τον κωδικό του οχήματος, το μοντέλο, τα χιλιόμετρα, και το έτος κατασκευής, για όλα τα οχήματα διαθέτουν Ηλεκτρικά Παράθυρα και Ζάντες αλουμινίου.
+SELECT  DISTINCT Vehicle.vehid,Models.model,km,Year FROM Vehicle,Models,veh_extras
+		WHERE(Vehicle.modid=Models.modid AND veh_extras.vehid=Vehicle.vehid AND (veh_extras.extraid=1 OR veh_extras.extraid=2) )
+10. Εμφανίστε ένα κατάλογο με τον κωδικό του οχήματος, το μοντέλο, τα χιλιόμετρα, και το έτος κατασκευής, για όλα τα οχήματα διαθέτουν ABS αλλά όχι CD-Player. 
+SELECT  Vehicle.vehid,Models.model,km,Year,veh_extras.extraid FROM Vehicle,Models,veh_extras
+		WHERE(Vehicle.modid=Models.modid AND veh_extras.vehid=Vehicle.vehid AND veh_extras.extraid=3 )
+		EXCEPT
+SELECT  Vehicle.vehid,Models.model,km,Year,veh_extras.extraid FROM Vehicle,Models,veh_extras
+		WHERE(Vehicle
+ 
+
+11. Απαριθμήστε τα πετρελαιοκίνητα οχήματα που έχουμε διαθέσιμα από τις κατασκευάστριες εταιρίες Mercedes και BMW, με τιμή κάτω των 15.000€ και λιγότερα από 100.000 km. 
+
+SELECT  COUNT(Vehicle.fuelid)  FROM Vehicle,Models,Company
+	WHERE(Vehicle.fuelid=1 AND Vehicle.modid=Models.modid AND Models.comid=Company.comid AND Vehicle.price<15000 AND Vehicle.km<100000 AND Vehicle.km<100000 AND( Company.name='BMW' OR Company.name='MERCEDES' )  )
+ 
+
+12. Εμφανίστε ένα κατάλογο με τα ονόματα των κατασκευαστών και τα μοντέλα των οχημάτων, ταξινομημένο με βάση το όνομα του κατασκευαστή σε αύξουσα διάταξη. Στον κατάλογο θα πρέπει να εμφανίζονται και τυχόν κατασκευαστές για τους οποίους δεν υπάρχουν διαθέσιμα μοντέλα στην βάση. 
+SELECT  Company.name,Models.model FROM Company
+	LEFT OUTER JOIN Models ON Company.comid=Models.comid 
+	ORDER BY Company.Name 
+	
+13. Εμφανίστε το μοντέλο και την τιμή των οχημάτων με τιμή μεγαλύτερη από όλα τα οχήματα της κατασκευάστριας εταιρείας "OPEL". 
+SELECT	Models.model , MAX(Vehicle.price) FROM Models,Vehicle,Company
+		WHERE(Vehicle.modid=Models.modid AND Models.comid=Company.comid AND Company.name='Opel')
+		GROUP BY Models.model
+14. Αυξήστε κατά 10% την τιμή όλων των πετρελαιοκίνητων οχημάτων. 
+UPDATE Vehicle
+SET Vehicle.price = (Vehicle.price * 1.1)
+where Vehicle.fuelid=1
+Επειδη ξεπερνούν αρκετές τιμές τους περιορισμούς ακεραιότητας που δόθηκαν κατά την CREATE TABLE του πίνακα Vehicle δεν μπορεί να πραγματοποιηθεί η μορφοποίηση
