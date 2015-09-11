@@ -1,3 +1,3 @@
 # SQL-Queries
-# N.Kanellopoulos
+ N.Kanellopoulos
 Various Queries in an online academic database to extract the asked data !
